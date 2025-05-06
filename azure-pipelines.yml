@@ -1,0 +1,25 @@
+trigger:
+  branches:
+    include:
+      - main  # Runs this pipeline on every push to the main branch
+
+pool:
+  name: Default  # Uses the self-hosted EC2 agent
+
+variables:
+  imageName: 'express-app'
+  dockerHubNamespace: 'michaelstev25'  # Replace with your Docker Hub username
+  tag: '$(Build.BuildId)'  # Unique build ID
+
+steps:
+- checkout: self  # Pulls the latest code from the repository
+
+- task: Docker@2
+  inputs:
+    containerRegistry: 'DockerHubServiceConnection'  # This needs to be configured in Azure DevOps
+    repository: '$(dockerHubNamespace)/$(imageName)'  # Final image name like: yourname/express-app
+    command: 'buildAndPush'
+    Dockerfile: './Dockerfile'  # Path to the Dockerfile in the repository
+    tags: |
+      $(tag)
+      latest
