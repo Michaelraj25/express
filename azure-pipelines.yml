@@ -19,7 +19,7 @@ steps:
     containerRegistry: 'DockerHubServiceConnection'  # This needs to be configured in Azure DevOps
     repository: '$(dockerHubNamespace)/$(imageName)'  # Final image name like: yourname/express-app
     command: 'buildAndPush'
-    Dockerfile: './Dockerfile'  # Path to the Dockerfile in the repository
+    Dockerfile: './dockerfile'  # Path to the Dockerfile in the repository
     tags: |
       $(tag)
       latest
